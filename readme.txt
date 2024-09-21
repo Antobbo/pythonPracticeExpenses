@@ -1,0 +1,1 @@
+This is just a simple exercise to familiarize with python syntax
