@@ -1,4 +1,5 @@
 from expense import Expense
+import csv
 EMPTY_VALUE_ERROR_MESSAGE = "Value cannot be empty"
 WRONG_TYPE_MESSAGE = "The value should be a number"
 WRONG_EXPENSE_CATEGORY = f"Must be from {next(iter(Expense.EXPENSE_CATEGORY))} to {len(Expense.EXPENSE_CATEGORY)}"
@@ -8,6 +9,7 @@ def main():
     user_input = getUserInput()
     new_expense = getExpense(user_input)
     print(f"data entered: {new_expense.name, new_expense.price, new_expense.category}")
+
 
 def getUserInput():
     expense_name = input("Enter expense name: ")
@@ -32,6 +34,14 @@ def getUserInput():
 
 def getExpense(user_input):
     return Expense(user_input[0], user_input[1], user_input[2])
+
+def pushDataToFile(file_name, new_expense):
+    expenseToAdd = [
+            [new_expense.name, new_expense.category, new_expense.price]            
+        ]
+    with open(file_name, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(expenseToAdd)
 
 if __name__ == "__main__":
     main()

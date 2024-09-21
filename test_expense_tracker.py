@@ -2,6 +2,7 @@ import unittest
 import expense
 import expense_tracker
 from unittest.mock import patch
+import os
 
 class TestExpenseTracker(unittest.TestCase):
 
@@ -94,6 +95,20 @@ class TestExpenseTracker(unittest.TestCase):
         self.assertEqual(new_expense.name, 'burger')
         self.assertEqual(new_expense.price, 10)
         self.assertEqual(new_expense.category, 1)
+
+    #FILE HANDLING
+    def test_should_create_file(self):
+        #given
+        file_name = expense.Expense.PATH_TO_FILE;
+        user_input = ['burger', 10, 1]
+        new_expense = expense_tracker.getExpense(user_input)
+        #when
+        expense_tracker.pushDataToFile(file_name, new_expense)
+        #then
+        self.assertTrue(os.path.isfile(file_name))
+        # Clean up by removing the file after the test
+        if os.path.isfile(file_name):
+            os.remove(file_name)
 
 if __name__ == '__main__':
     unittest.main()
