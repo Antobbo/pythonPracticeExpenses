@@ -39,7 +39,7 @@ def pushDataToFile(file_name, new_expense):
     expenseToAdd = [
             [new_expense.name, new_expense.category, new_expense.price]            
         ]
-    with open(file_name, mode='w', newline='') as file:
+    with open(file_name, mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(expenseToAdd)
 

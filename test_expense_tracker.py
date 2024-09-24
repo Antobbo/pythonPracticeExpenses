@@ -3,6 +3,7 @@ import expense
 import expense_tracker
 from unittest.mock import patch
 import os
+import pandas as pd
 
 class TestExpenseTracker(unittest.TestCase):
 
@@ -109,6 +110,24 @@ class TestExpenseTracker(unittest.TestCase):
         # Clean up by removing the file after the test
         if os.path.isfile(file_name):
             os.remove(file_name)
+
+    @unittest.SkipTest
+    def test_should_data_in_file_be_as_expected(self):
+        pass
+    
+   
+    def test_should_file_created_and_updated_have_right_number_of_rows(self):
+        #given
+        file_name = expense.Expense.PATH_TO_FILE;
+        user_input = ['burger', 10, 1]
+        user_input_2 = ['electricity', 100, 2]
+        new_expense = expense_tracker.getExpense(user_input)
+        new_expense_2 = expense_tracker.getExpense(user_input_2)
+        expense_tracker.pushDataToFile(file_name, new_expense)
+        expense_tracker.pushDataToFile(file_name, new_expense_2)
+        df = pd.read_csv(file_name, header=None)
+        rows = len(df)
+        self.assertEqual(rows,2, "Row number should be 2")
 
 if __name__ == '__main__':
     unittest.main()
