@@ -101,22 +101,16 @@ class TestExpenseTracker(unittest.TestCase):
     def test_should_create_file(self):
         #given
         file_name = expense.Expense.PATH_TO_FILE;
-        user_input = ['burger', 10, 1]
+        user_input = ['burger', 15, 1]
         new_expense = expense_tracker.getExpense(user_input)
         #when
         expense_tracker.pushDataToFile(file_name, new_expense)
         #then
         self.assertTrue(os.path.isfile(file_name))
-        # Clean up by removing the file after the test
-        if os.path.isfile(file_name):
-            os.remove(file_name)
+        self.delete_file(file_name)        
 
-    @unittest.SkipTest
-    def test_should_data_in_file_be_as_expected(self):
-        pass
-    
    
-    def test_should_file_created_and_updated_have_right_number_of_rows(self):
+    def test_should_file_created_and_updated_have_right_number_of_rows_and_right_values(self):
         #given
         file_name = expense.Expense.PATH_TO_FILE;
         user_input = ['burger', 10, 1]
@@ -127,7 +121,16 @@ class TestExpenseTracker(unittest.TestCase):
         expense_tracker.pushDataToFile(file_name, new_expense_2)
         df = pd.read_csv(file_name, header=None)
         rows = len(df)
-        self.assertEqual(rows,2, "Row number should be 2")
+        self.assertEqual(rows, 2, "Row number should be 2")
+        col_list = df[0].tolist()
+        self.assertTrue('burger' in col_list)
+        self.assertTrue('electricity' in col_list)
+        self.delete_file(file_name)
+
+    def delete_file(self, file_name):
+        # Clean up by removing the file after the test
+        if os.path.isfile(file_name):
+            os.remove(file_name)
 
 if __name__ == '__main__':
     unittest.main()
