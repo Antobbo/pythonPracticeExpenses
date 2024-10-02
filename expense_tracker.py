@@ -1,5 +1,7 @@
 from expense import Expense
 import csv
+import pandas as pd
+
 EMPTY_VALUE_ERROR_MESSAGE = "Value cannot be empty"
 WRONG_TYPE_MESSAGE = "The value should be a number"
 WRONG_EXPENSE_CATEGORY = f"Must be from {next(iter(Expense.EXPENSE_CATEGORY))} to {len(Expense.EXPENSE_CATEGORY)}"
@@ -9,6 +11,12 @@ def main():
     user_input = getUserInput()
     new_expense = getExpense(user_input)
     print(f"data entered: {new_expense.name, new_expense.price, new_expense.category}")
+    pushDataToFile(Expense.PATH_TO_FILE, new_expense)
+    #TODO: show how much you've spent in total 
+    total_expenses = getTotalExpenditure()
+    print(f"You've spent a total of £: ")
+    # TODO: show how much you've spent for all categories
+    #TODO: show the balance left for this month
 
 
 def getUserInput():
@@ -37,11 +45,15 @@ def getExpense(user_input):
 
 def pushDataToFile(file_name, new_expense):
     expenseToAdd = [
-            [new_expense.name, new_expense.category, new_expense.price]            
+            [new_expense.name, new_expense.price, new_expense.category]            
         ]
     with open(file_name, mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(expenseToAdd)
+
+def getTotalExpenditure():
+    df = pd.read_csv(Expense.PATH_TO_FILE, header=None)
+    return df[1].sum()
 
 if __name__ == "__main__":
     main()
