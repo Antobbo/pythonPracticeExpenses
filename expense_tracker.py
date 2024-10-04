@@ -12,10 +12,13 @@ def main():
     new_expense = getExpense(user_input)
     print(f"data entered: {new_expense.name, new_expense.price, new_expense.category}")
     pushDataToFile(Expense.PATH_TO_FILE, new_expense)
-    #TODO: show how much you've spent in total 
     total_expenses = getTotalExpenditure()
-    print(f"You've spent a total of £: ")
-    # TODO: show how much you've spent for all categories
+    print(f"You've spent a total of £{total_expenses}")
+    expenditure_by_category = getExpenditureBreakdown()
+    for category, total in expenditure_by_category.items():
+        category_name = Expense.EXPENSE_CATEGORY.get(category, 'Unknown')
+        print(f'You spent £{total} for category {category_name}')
+
     #TODO: show the balance left for this month
 
 
@@ -53,7 +56,12 @@ def pushDataToFile(file_name, new_expense):
 
 def getTotalExpenditure():
     df = pd.read_csv(Expense.PATH_TO_FILE, header=None)
+    #TODO: can we determine the column number somehow rather than hardcode it?
     return df[1].sum()
+
+def  getExpenditureBreakdown():
+    df = pd.read_csv(Expense.PATH_TO_FILE, header=None, names=['Expense', 'Price', 'Category'])
+    return df.groupby('Category')['Price'].sum()
 
 if __name__ == "__main__":
     main()
