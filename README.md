@@ -11,7 +11,10 @@ The most important bits here are the tests that were not in the original project
 
 ## Sample run
 A sample run looks like this:
+
 ![alt text](image.png "sample run")
 
+
 The CSV:
+
 ![alt text](image-1.png)
