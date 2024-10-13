@@ -172,6 +172,12 @@ class TestExpenseTracker(unittest.TestCase):
         self.assertEqual(expected_result, actual_result.to_dict(), "They should be equal")
         self.delete_file(file_name)
 
+    def test_should_calculate_remaining_allowance(self):
+        expected_remaining_allowance = 1400
+        actual_remaining_allowance = expense_tracker.getRamainingAllowance(600)        
+        self.assertEqual(expected_remaining_allowance, actual_remaining_allowance, "They should be equal")
+        
+
     def delete_file(self, file_name):
         # Clean up by removing the file after the test
         if os.path.isfile(file_name):

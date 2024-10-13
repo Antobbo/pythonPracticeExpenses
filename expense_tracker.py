@@ -15,11 +15,13 @@ def main():
     total_expenses = getTotalExpenditure()
     print(f"You've spent a total of £{total_expenses}")
     expenditure_by_category = getExpenditureBreakdown()
+
     for category, total in expenditure_by_category.items():
         category_name = Expense.EXPENSE_CATEGORY.get(category, 'Unknown')
         print(f'You spent £{total} for category {category_name}')
 
-    #TODO: show the balance left for this month
+    remaining_allowance = getRamainingAllowance(total_expenses)
+    print(f"You have left £")
 
 
 def getUserInput():
@@ -62,6 +64,9 @@ def getTotalExpenditure():
 def  getExpenditureBreakdown():
     df = pd.read_csv(Expense.PATH_TO_FILE, header=None, names=['Expense', 'Price', 'Category'])
     return df.groupby('Category')['Price'].sum()
+
+def getRamainingAllowance(total_expenses):
+    return Expense.MONTHLY_BUDGET - total_expenses
 
 if __name__ == "__main__":
     main()
