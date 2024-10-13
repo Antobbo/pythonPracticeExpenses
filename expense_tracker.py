@@ -21,7 +21,7 @@ def main():
         print(f'You spent £{total} for category {category_name}')
 
     remaining_allowance = getRamainingAllowance(total_expenses)
-    print(f"You have left £")
+    print(f"You have left £{remaining_allowance}")
 
 
 def getUserInput():
